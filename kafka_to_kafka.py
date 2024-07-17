@@ -5,7 +5,6 @@ spark = SparkSession.builder \
     .appName("kafka_to_kafka") \
     .config("spark.some.config.option", "config-value") \
     .getOrCreate()
-
 spark.sparkContext.setLogLevel("WARN") 
 
 # read kafka topic
