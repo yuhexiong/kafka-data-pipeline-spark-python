@@ -35,7 +35,6 @@ source_topic in host:port -> sink_topic in host:port
     "description": "Advanced drilling machine for industrial use",
     "location": "Production Line A"
 }
-
 ```
 
 - doris table
@@ -44,5 +43,31 @@ source_topic in host:port -> sink_topic in host:port
 |------------------|----------------------|-----------------|-----------|---------------------------------------------|-------------------|
 | "FD2023"         | "Drilling Machine 2000" | "TechTools Inc." | "DTM-2000" | "Advanced drilling machine for industrial use" | "Production Line A" |
 
+
+### 3. kafka_to_doris_list
+
+- Kafka Data Structure
+```
+{
+    "payload": [
+        {
+            "device_id": "FD2023",
+            "device_name": "Drilling Machine 2000",
+            "timestamp": "2024-07-19T10:00:00Z",
+            "manufacturer": "TechTools Inc.",
+            "model": "DTM-2000",
+            "description": "Advanced drilling machine for industrial use",
+            "location": "Production Line A",
+            "battery_voltage": "12.5"
+        }
+    ]
+}
+```
+
+- doris table
+
+| id      | device_name           | timestamp           | manufacturer    | model     | description                                 | location          | battery_voltage |
+|---------|-----------------------|---------------------|-----------------|-----------|---------------------------------------------|-------------------|-----------------|
+| "FD2023"| "Drilling Machine 2000"| "2024-07-19T10:00:00Z" | "TechTools Inc." | "DTM-2000" | "Advanced drilling machine for industrial use" | "Production Line A"| 12.5            |
 
 
