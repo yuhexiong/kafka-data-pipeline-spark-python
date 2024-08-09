@@ -19,11 +19,15 @@ docker run --rm my-spark-app
 
 ## Entry
 
-### 1. kafka_to_kafka
+### 1. Kafka To Kafka
+
+code refer to [kafka_to_kafka.py](kafka_to_kafka.py)  
 
 source_topic in host:port -> sink_topic in host:port   
 
-### 2. kafka_to_doris
+### 2. Kafka To Doris
+
+code refer to [kafka_to_doris.py](kafka_to_doris.py)  
 
 - Kafka Data Structure
 ```
@@ -44,7 +48,11 @@ source_topic in host:port -> sink_topic in host:port
 | "FD2023"         | "Drilling Machine 2000" | "TechTools Inc." | "DTM-2000" | "Advanced drilling machine for industrial use" | "Production Line A" |
 
 
-### 3. kafka_to_doris_list
+### 3. Kafka List To Doris
+
+code refer to  
+(1) [kafka_list_to_doris.py](kafka_list_to_doris.py)  
+(2) define schema in yaml [kafka_list_to_doris_with_yaml.py](kafka_list_to_doris_with_yaml.py) and [kafka_list_to_doris_setting.yaml](kafka_list_to_doris_setting.yaml)  
 
 - Kafka Data Structure
 ```
