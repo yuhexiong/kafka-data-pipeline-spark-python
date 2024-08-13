@@ -79,3 +79,36 @@ code refer to
 | "FD2023"| "Drilling Machine 2000"| "2024-07-19T10:00:00Z" | "TechTools Inc." | "DTM-2000" | "Advanced drilling machine for industrial use" | "Production Line A"| 12.5            |
 
 
+### 3. Kafka Cdc To Doris
+
+after the debezium cdc tool uploads the changed data in the database to kafka, it processes its data format and transmits it to doris. do not care about the data before modification, only add the data after to doris, and use the overlay function of doris to directly replace it.  
+
+code refer to  
+(1) [kafka_cdc_to_doris.py](kafka_cdc_to_doris.py)  
+
+- Kafka Data Structure
+```
+{
+    "payload": {
+        "before": null,
+        "after": {
+            "id": "FD2023",
+            "device_name": "Drilling Machine 2000",
+            "timestamp": 1721383200000,
+            "manufacturer": "TechTools Inc.",
+            "model": "DTM-2000",
+            "description": "Advanced drilling machine for industrial use",
+            "location": "Production Line A",
+            "battery_voltage": 12.5
+        }
+    }
+}
+```
+
+- doris table
+
+| id      | device_name           | timestamp           | manufacturer    | model     | description                                 | location          | battery_voltage |
+|---------|-----------------------|---------------------|-----------------|-----------|---------------------------------------------|-------------------|-----------------|
+| "FD2023"| "Drilling Machine 2000"| "2024-07-19T10:00:00Z" | "TechTools Inc." | "DTM-2000" | "Advanced drilling machine for industrial use" | "Production Line A"| 12.5            |
+
+

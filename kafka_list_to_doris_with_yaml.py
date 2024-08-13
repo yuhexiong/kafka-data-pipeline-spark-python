@@ -27,9 +27,7 @@ df = spark \
     .load()
 
 def get_spark_type(type_str):
-    if type_str == 'string':
-        return StringType()
-    elif type_str == 'double':
+    if type_str == 'double':
         return DoubleType()
     elif type_str == 'timestamp':
         return TimestampType()

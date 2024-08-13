@@ -1,13 +1,13 @@
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, from_json, explode
-from pyspark.sql.types import StructType, StringType, StructField, TimestampType, ArrayType, DoubleType
+from pyspark.sql.functions import col, from_json
+from pyspark.sql.types import StructType, StringType, StructField, TimestampType
 
 spark = SparkSession.builder \
-    .appName("kafka_to_doris_list") \
+    .appName("MySparkApp") \
     .config("spark.some.config.option", "config-value") \
     .getOrCreate()
 
-spark.sparkContext.setLogLevel("WARN")
+spark.sparkContext.setLogLevel("WARN") 
 
 # read kafka topic
 df = spark \
@@ -16,12 +16,14 @@ df = spark \
     .option("kafka.bootstrap.servers", "host:port") \
     .option("subscribe", "source_topic") \
     .option("startingOffsets", "earliest") \
+    .option("failOnDataLoss", "false") \
     .load()
 
 # define kafka schema
 value_schema = StructType([
-    StructField("payload", ArrayType(StructType([
-        StructField("device_id", StringType()),
+    StructField("payload", StructType([  
+        StructField("after", StructType([ 
+        StructField("id", StringType()),
         StructField("device_name", StringType()),
         StructField("timestamp", TimestampType()),
         StructField("manufacturer", StringType()),
@@ -29,25 +31,15 @@ value_schema = StructType([
         StructField("description", StringType()),
         StructField("location", StringType()),
         StructField("battery_voltage", StringType())
-    ])))
+        ]))
+    ]))
 ])
 
 # processed df
 processed_df = df \
     .selectExpr("CAST(value AS STRING) as json_string") \
     .select(from_json(col("json_string"), value_schema).alias("data")) \
-    .select("data.payload") \
-    .withColumn("payload", explode(col("payload"))) \
-    .select(
-        col("payload.device_id").alias("id"),
-        col("payload.device_name").alias("device_name"),
-        col("payload.timestamp").alias("timestamp"),
-        col("payload.manufacturer").alias("manufacturer"),
-        col("payload.model").alias("model"),
-        col("payload.description").alias("description"),
-        col("payload.location").alias("location"),
-        col("payload.battery_voltage").cast(DoubleType()).alias("battery_voltage")
-    )
+    .select("data.payload.after.*")
 
 # write doris table
 ds = processed_df \

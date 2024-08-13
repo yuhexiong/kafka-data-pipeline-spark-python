@@ -17,7 +17,7 @@ df = spark \
     .option("startingOffsets", "earliest") \
     .load()
 
-# define doris schema
+# define kafka schema
 value_schema = StructType() \
     .add("device_id", StringType()) \
     .add("device_name", StringType()) \
