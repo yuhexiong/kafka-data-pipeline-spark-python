@@ -1,6 +1,6 @@
 # Kafka Data Pipeline Spark
 
-Data pipeline written by Spark to transfer kafka to kakfa, doris.  
+Data pipeline written by Spark to transfer Kafka to Kafka, Doris.  
 
 ## Overview
 
@@ -30,7 +30,7 @@ source_topic in host:port -> sink_topic in host:port
 code refer to [kafka_to_doris.py](kafka_to_doris.py)  
 
 - Kafka Data Structure
-```
+```json
 {
     "device_id": "FD2023",
     "device_name": "Drilling Machine 2000",
@@ -55,7 +55,7 @@ code refer to
 (2) define schema in yaml [kafka_list_to_doris_with_yaml.py](kafka_list_to_doris_with_yaml.py) and [kafka_list_to_doris_setting.yaml](kafka_list_to_doris_setting.yaml)  
 
 - Kafka Data Structure
-```
+```json
 {
     "payload": [
         {
@@ -85,9 +85,11 @@ after the debezium cdc tool uploads the changed data in the database to kafka, i
 
 code refer to  
 (1) [kafka_cdc_to_doris.py](kafka_cdc_to_doris.py)  
+(2) define schema in yaml [kafka_cdc_to_doris_with_yaml.py](kafka_cdc_to_doris_with_yaml.py) and [kafka_cdc_to_doris_setting.yaml](kafka_cdc_to_doris_setting.yaml)  
+
 
 - Kafka Data Structure
-```
+```json
 {
     "payload": {
         "before": null,

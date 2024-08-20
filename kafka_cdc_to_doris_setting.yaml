@@ -1,0 +1,56 @@
+source:
+  bootstrapServers: host:port
+  topic: source_topic
+  fields:
+process:
+  steps:
+    - operation: "select_expr"
+      value: "CAST(value AS STRING) as json_string"
+    - operation: "from_json"
+      value: "data"
+    - operation: "select_columns"
+      value: "data"
+  fields:
+    - name: payload
+      from_type: object
+      fields:
+        - name: after
+          from_type: object
+          fields:
+            - name: id
+              alias: id
+              from_type: string
+              to_type: string
+            - name: device_name
+              alias: device_name
+              from_type: string
+              to_type: string
+            - name: timestamp
+              alias: timestamp
+              from_type: timestamp
+              to_type: timestamp
+            - name: manufacturer
+              alias: manufacturer
+              from_type: string
+              to_type: string
+            - name: model
+              alias: model
+              from_type: string
+              to_type: string
+            - name: description
+              alias: description
+              from_type: string
+              to_type: string
+            - name: location
+              alias: location
+              from_type: string
+              to_type: string
+            - name: battery_voltage
+              alias: battery_voltage
+              from_type: double
+              to_type: double
+sink:
+  feNodes: host:8030
+  table: database.sink_table
+  username: root
+  password: password
