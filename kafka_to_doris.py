@@ -30,18 +30,18 @@ value_schema = StructType() \
 processed_df = df \
     .selectExpr("CAST(value AS STRING) as json_string") \
     .select(from_json(col("json_string"), value_schema).alias("data")) \
-    .select("data.*") 
+    .select("data.*")
 
 # write doris table
 ds = processed_df \
-        .writeStream \
-        .format("doris") \
-        .option("checkpointLocation", "./checkpoint") \
-        .option("doris.table.identifier", "database.sink_table") \
-        .option("doris.fenodes", "host:8030") \
-        .option("user", "root") \
-        .option("password", "password") \
-        .start()
+    .writeStream \
+    .format("doris") \
+    .option("checkpointLocation", "./checkpoint") \
+    .option("doris.table.identifier", "database.sink_table") \
+    .option("doris.fenodes", "host:8030") \
+    .option("user", "root") \
+    .option("password", "password") \
+    .start()
 
 # print log
 console_output = processed_df \

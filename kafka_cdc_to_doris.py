@@ -3,11 +3,11 @@ from pyspark.sql.functions import col, from_json
 from pyspark.sql.types import StructType, StringType, StructField, TimestampType
 
 spark = SparkSession.builder \
-    .appName("MySparkApp") \
+    .appName("kafka_cdc_to_doris") \
     .config("spark.some.config.option", "config-value") \
     .getOrCreate()
 
-spark.sparkContext.setLogLevel("WARN") 
+spark.sparkContext.setLogLevel("WARN")
 
 # read kafka topic
 df = spark \
@@ -21,16 +21,16 @@ df = spark \
 
 # define kafka schema
 value_schema = StructType([
-    StructField("payload", StructType([  
-        StructField("after", StructType([ 
-        StructField("id", StringType()),
-        StructField("device_name", StringType()),
-        StructField("timestamp", TimestampType()),
-        StructField("manufacturer", StringType()),
-        StructField("model", StringType()),
-        StructField("description", StringType()),
-        StructField("location", StringType()),
-        StructField("battery_voltage", StringType())
+    StructField("payload", StructType([
+        StructField("after", StructType([
+            StructField("id", StringType()),
+            StructField("device_name", StringType()),
+            StructField("timestamp", TimestampType()),
+            StructField("manufacturer", StringType()),
+            StructField("model", StringType()),
+            StructField("description", StringType()),
+            StructField("location", StringType()),
+            StructField("battery_voltage", StringType())
         ]))
     ]))
 ])
@@ -43,14 +43,14 @@ processed_df = df \
 
 # write doris table
 ds = processed_df \
-        .writeStream \
-        .format("doris") \
-        .option("checkpointLocation", "./checkpoint") \
-        .option("doris.table.identifier", "database.sink_table") \
-        .option("doris.fenodes", "host:8030") \
-        .option("user", "root") \
-        .option("password", "password") \
-        .start()
+    .writeStream \
+    .format("doris") \
+    .option("checkpointLocation", "./checkpoint") \
+    .option("doris.table.identifier", "database.sink_table") \
+    .option("doris.fenodes", "host:8030") \
+    .option("user", "root") \
+    .option("password", "password") \
+    .start()
 
 # print log
 console_output = processed_df \

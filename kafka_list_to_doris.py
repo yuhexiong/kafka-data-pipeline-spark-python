@@ -3,7 +3,7 @@ from pyspark.sql.functions import col, from_json, explode
 from pyspark.sql.types import StructType, StringType, StructField, TimestampType, ArrayType, DoubleType
 
 spark = SparkSession.builder \
-    .appName("kafka_to_doris_list") \
+    .appName("kafka_list_to_doris") \
     .config("spark.some.config.option", "config-value") \
     .getOrCreate()
 
@@ -46,19 +46,20 @@ processed_df = df \
         col("payload.model").alias("model"),
         col("payload.description").alias("description"),
         col("payload.location").alias("location"),
-        col("payload.battery_voltage").cast(DoubleType()).alias("battery_voltage")
+        col("payload.battery_voltage").cast(
+            DoubleType()).alias("battery_voltage")
     )
 
 # write doris table
 ds = processed_df \
-        .writeStream \
-        .format("doris") \
-        .option("checkpointLocation", "./checkpoint") \
-        .option("doris.table.identifier", "database.sink_table") \
-        .option("doris.fenodes", "host:8030") \
-        .option("user", "root") \
-        .option("password", "password") \
-        .start()
+    .writeStream \
+    .format("doris") \
+    .option("checkpointLocation", "./checkpoint") \
+    .option("doris.table.identifier", "database.sink_table") \
+    .option("doris.fenodes", "host:8030") \
+    .option("user", "root") \
+    .option("password", "password") \
+    .start()
 
 # print log
 console_output = processed_df \

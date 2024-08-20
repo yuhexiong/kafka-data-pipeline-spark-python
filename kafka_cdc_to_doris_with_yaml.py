@@ -4,7 +4,7 @@ from pyspark.sql.types import StructType, StringType, StructField, DoubleType, T
 import yaml
 
 spark = SparkSession.builder \
-    .appName("MySparkApp") \
+    .appName("kafka_cdc_to_doris_with_yaml") \
     .config("spark.some.config.option", "config-value") \
     .getOrCreate()
 
@@ -64,9 +64,8 @@ def process_schema_fields(fields):
 schema_fields = process_schema_fields(fields)
 value_schema = StructType(schema_fields)
 
+
 # define doris schema
-
-
 def get_selected_column(name, alias, from_type, to_type):
     column = col(name)
 
