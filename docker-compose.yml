@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  spark_dev:
+    build: .
+    container_name: spark.dev
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: bash -c "python3 kafka_cdc_to_doris.py"
