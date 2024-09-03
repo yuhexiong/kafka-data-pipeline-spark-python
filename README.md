@@ -11,9 +11,10 @@ Data pipeline written by Spark to transfer Kafka to Kafka, Doris.
 ## Run
 
 ### Run Docker Container
+
+edit filename in docker-compose.yaml  
 ```
-docker build -t my-spark-app .
-docker run --rm my-spark-app
+docker compose up -d
 ```
 
 
@@ -41,7 +42,7 @@ code refer to [kafka_to_doris.py](kafka_to_doris.py)
 }
 ```
 
-- doris table
+- Doris table
 
 | device_id        | device_name          | manufacturer    | model     | description                                 | location          |
 |------------------|----------------------|-----------------|-----------|---------------------------------------------|-------------------|
@@ -72,7 +73,7 @@ code refer to
 }
 ```
 
-- doris table
+- Doris table
 
 | id      | device_name           | timestamp           | manufacturer    | model     | description                                 | location          | battery_voltage |
 |---------|-----------------------|---------------------|-----------------|-----------|---------------------------------------------|-------------------|-----------------|
@@ -107,7 +108,7 @@ code refer to
 }
 ```
 
-- doris table
+- Doris table
 
 | id      | device_name           | timestamp           | manufacturer    | model     | description                                 | location          | battery_voltage |
 |---------|-----------------------|---------------------|-----------------|-----------|---------------------------------------------|-------------------|-----------------|
@@ -158,3 +159,14 @@ code refer to [2kafka_to_kafka.py](2kafka_to_kafka.py)
     "status": "active"
 }
 ```
+
+### 6. 2 Kafka To Doris
+
+code refer to [2kafka_to_doris.py](./2kafka_to_doris.py)  
+data source same as `5. 2 Kafka To Kafka`  
+
+- Doris table
+
+| id     | device_name          | manufacturer  | model   | description                               | location        | battery_voltage | timestamp           | status |
+|--------|----------------------|---------------|---------|-------------------------------------------|-----------------|-----------------|---------------------|--------|
+| FD2023 | Drilling Machine 2000 | TechTools Inc.| DTM-2000| Advanced drilling machine for industrial use | Production Line A | 12.5            | 2024-07-19T10:05:00Z| active |

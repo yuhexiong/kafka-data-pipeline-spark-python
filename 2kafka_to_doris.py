@@ -89,16 +89,16 @@ console_output2 = df2_parsed \
 
 # join df
 joined_df = df1_parsed.join(df2_parsed, df1_parsed.id == df2_parsed.device_id)
-joined_df_with_key_value = joined_df \
-    .selectExpr("name AS key", "to_json(struct(*)) AS value")
 
-# write kafka
-ds = joined_df_with_key_value \
+# write doris table
+ds = joined_df \
     .writeStream \
-    .format("kafka") \
-    .option("kafka.bootstrap.servers", "host:port") \
-    .option("topic", "sink_topic") \
+    .format("doris") \
     .option("checkpointLocation", "./checkpoint") \
+    .option("doris.table.identifier", "database.sink_table") \
+    .option("doris.fenodes", "host:8030") \
+    .option("user", "root") \
+    .option("password", "password") \
     .start()
 
 console_output3 = joined_df \
