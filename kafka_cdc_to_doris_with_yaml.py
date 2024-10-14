@@ -36,10 +36,6 @@ def get_spark_type(type_str):
         return StringType()
 
 
-# define kafka value schema
-fields = process['fields']
-schema_fields = []
-
 
 def process_schema_fields(fields):
     schema_fields = []
@@ -61,6 +57,8 @@ def process_schema_fields(fields):
     return schema_fields
 
 
+# define kafka value schema
+fields = process['fields']
 schema_fields = process_schema_fields(fields)
 value_schema = StructType(schema_fields)
 
@@ -129,7 +127,7 @@ ds = processed_df \
     .option("checkpointLocation", "./checkpoint") \
     .option("doris.table.identifier", sink['table']) \
     .option("doris.fenodes", sink['feNodes']) \
-    .option("user", sink['username']) \
+    .option("user", sink['user']) \
     .option("password", sink['password']) \
     .start()
 

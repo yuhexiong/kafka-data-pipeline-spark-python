@@ -51,10 +51,6 @@ for field in fields:
 
 value_schema = StructType(schema_fields)
 
-# define doris schema
-selected_columns = []
-
-
 def get_selected_column(name, alias, from_type, to_type):
     column = col(name)
     if to_type == 'timestamp':
@@ -69,6 +65,8 @@ def get_selected_column(name, alias, from_type, to_type):
     return column
 
 
+# define doris schema
+selected_columns = []
 for field in fields:
     if field['from_type'] == 'array' or field['from_type'] == 'list':
         sub_fields = field['items']
@@ -104,7 +102,7 @@ ds = processed_df \
     .option("checkpointLocation", "./checkpoint") \
     .option("doris.table.identifier", sink['table']) \
     .option("doris.fenodes", sink['feNodes']) \
-    .option("user", sink['username']) \
+    .option("user", sink['user']) \
     .option("password", sink['password']) \
     .start()
 

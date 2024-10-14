@@ -1,7 +1,6 @@
 source:
   bootstrapServers: host:port
   topic: source_topic
-  fields:
 process:
   steps:
     - operation: "select_expr"
@@ -53,5 +52,5 @@ process:
 sink:
   feNodes: host:8030
   table: database.sink_table
-  username: root
+  user: root
   password: password
