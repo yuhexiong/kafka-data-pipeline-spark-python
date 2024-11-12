@@ -5,7 +5,6 @@ import yaml
 
 spark = SparkSession.builder \
     .appName("kafka_list_to_doris_with_yaml") \
-    .config("spark.some.config.option", "config-value") \
     .getOrCreate()
 
 spark.sparkContext.setLogLevel("WARN")
@@ -99,7 +98,7 @@ for step in process['steps']:
 ds = processed_df \
     .writeStream \
     .format("doris") \
-    .option("checkpointLocation", "./checkpoint") \
+    .option("checkpointLocation", f"./checkpoint/{sink['table']}") \
     .option("doris.table.identifier", sink['table']) \
     .option("doris.fenodes", sink['feNodes']) \
     .option("user", sink['user']) \

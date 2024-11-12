@@ -3,7 +3,6 @@ from pyspark.sql.functions import col
 
 spark = SparkSession.builder \
     .appName("kafka_to_kafka") \
-    .config("spark.some.config.option", "config-value") \
     .getOrCreate()
 spark.sparkContext.setLogLevel("WARN")
 
@@ -28,7 +27,7 @@ ds = processed_df \
     .format("kafka") \
     .option("kafka.bootstrap.servers", "host:port") \
     .option("topic", "sink_topic") \
-    .option("checkpointLocation", "./checkpoint") \
+    .option("checkpointLocation", "./checkpoint/sink_topic") \
     .start()
 
 # print log

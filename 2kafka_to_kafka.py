@@ -4,7 +4,6 @@ from pyspark.sql.types import StructType, StringType, StructField, ArrayType, Ti
 
 spark = SparkSession.builder \
     .appName("2kafka_to_kafka") \
-    .config("spark.some.config.option", "config-value") \
     .getOrCreate()
 
 spark.sparkContext.setLogLevel("WARN")
@@ -98,7 +97,7 @@ ds = joined_df_with_key_value \
     .format("kafka") \
     .option("kafka.bootstrap.servers", "host:port") \
     .option("topic", "sink_topic") \
-    .option("checkpointLocation", "./checkpoint") \
+    .option("checkpointLocation", "./checkpoint/sink_topic") \
     .start()
 
 console_output3 = joined_df \

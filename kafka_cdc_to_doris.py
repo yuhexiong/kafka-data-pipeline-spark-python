@@ -4,7 +4,6 @@ from pyspark.sql.types import StructType, StringType, StructField, TimestampType
 
 spark = SparkSession.builder \
     .appName("kafka_cdc_to_doris") \
-    .config("spark.some.config.option", "config-value") \
     .getOrCreate()
 
 spark.sparkContext.setLogLevel("WARN")
@@ -45,7 +44,7 @@ processed_df = df \
 ds = processed_df \
     .writeStream \
     .format("doris") \
-    .option("checkpointLocation", "./checkpoint") \
+    .option("checkpointLocation", "./checkpoint/sink_table") \
     .option("doris.table.identifier", "database.sink_table") \
     .option("doris.fenodes", "host:8030") \
     .option("user", "root") \

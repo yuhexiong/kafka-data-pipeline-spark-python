@@ -4,7 +4,6 @@ from pyspark.sql.types import StructType, StringType, StructField, ArrayType, Ti
 
 spark = SparkSession.builder \
     .appName("2kafka_to_kafka") \
-    .config("spark.some.config.option", "config-value") \
     .getOrCreate()
 
 spark.sparkContext.setLogLevel("WARN")
@@ -94,7 +93,7 @@ joined_df = df1_parsed.join(df2_parsed, df1_parsed.id == df2_parsed.device_id)
 ds = joined_df \
     .writeStream \
     .format("doris") \
-    .option("checkpointLocation", "./checkpoint") \
+    .option("checkpointLocation", "./checkpoint/sink_table") \
     .option("doris.table.identifier", "database.sink_table") \
     .option("doris.fenodes", "host:8030") \
     .option("user", "root") \
