@@ -109,7 +109,7 @@ for step in process['steps']:
         processed_df = processed_df.selectExpr(step['value'])
     elif step['operation'] == "from_json":
         processed_df = processed_df.select(
-            from_json(col("json_string"), value_schema).alias(step['value']))
+            from_json(col(step['from_value']), value_schema).alias(step['to_value']))
     elif step['operation'] == "select_column":
         processed_df = processed_df.select(step['value'])
     elif step['operation'] == "select_columns":

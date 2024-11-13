@@ -6,7 +6,8 @@ process:
     - operation: "select_expr"
       value: "CAST(value AS STRING) as json_string"
     - operation: "from_json"
-      value: "data"
+      from_value: "from_json"
+      to_value: "data"
     - operation: "select_columns"
       value: "data"
   fields:
